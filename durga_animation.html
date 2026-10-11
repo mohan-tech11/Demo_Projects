@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jai Mata Di - Durga Mata Canvas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b0205;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        canvas {
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(255, 153, 51, 0.4), 0 0 100px rgba(255, 0, 0, 0.2);
+            background: radial-gradient(circle, #3d0309 0%, #170104 70%, #080002 100%);
+        }
+
+        h1 {
+            margin-top: 25px;
+            color: #ffd700;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #ff9933, 0 0 20px #ff3300;
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        h2 {
+            color: #ffaa44;
+            font-size: 1.2rem;
+            margin-top: 8px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                text-shadow: 0 0 10px #ff9933, 0 0 20px #ff3300;
+            }
+            100% {
+                text-shadow: 0 0 20px #ffd700, 0 0 35px #ff6600;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <canvas id="durgaCanvas" width="500" height="500"></canvas>
+        <h1>ॐ ดุรกาเย นะมะฮา</h1>
+        <h2>॥ ॐ ดุรคาย์ นมะห์ ॥</h2>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('durgaCanvas');
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const centerX = width / 2;
+        const centerY = height / 2 - 20;
+
+        // Background twinkling stars
+        const stars = [];
+        for (let i = 0; i < 60; i++) {
+            stars.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                radius: Math.random() * 1.8,
+                alpha: Math.random(),
+                speed: 0.02 + Math.random() * 0.03
+            });
+        }
+
+        let angle = 0;
+
+        function drawStars() {
+            stars.forEach(star => {
+                star.alpha += star.speed;
+                if (star.alpha > 1 || star.alpha < 0) {
+                    star.speed = -star.speed;
+                }
+                ctx.fillStyle = `rgba(255, 235, 205, ${Math.abs(star.alpha)})`;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function drawDivineAura() {
+            const auraPulse = Math.sin(angle) * 12;
+            const rays = 16;
+
+            ctx.save();
+            ctx.translate(centerX, centerY);
+
+            // Rotating Sunburst Aura Rays
+            for (let i = 0; i < rays; i++) {
+                const rayAngle = (i * Math.PI * 2) / rays + (angle * 0.2);
+                ctx.strokeStyle = `rgba(255, 180, 50, ${0.12 + 0.05 * Math.sin(angle + i)})`;
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(
+                    Math.cos(rayAngle) * (180 + auraPulse),
+                    Math.sin(rayAngle) * (180 + auraPulse)
+                );
+                ctx.stroke();
+            }
+
+            // Concentric glowing rings
+            for (let r = 160 + auraPulse; r > 40; r -= 20) {
+                ctx.beginPath();
+                ctx.arc(0, 0, r, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, ${Math.floor(120 + r)}, 20, ${0.15 + (160 - r) / 300})`;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        function drawTrishul() {
+            ctx.save();
+            ctx.translate(centerX, centerY + 10);
+
+            const goldGradient = ctx.createLinearGradient(-20, -100, 20, 100);
+            goldGradient.addColorStop(0, '#fff4b8');
+            goldGradient.addColorStop(0.5, '#ffd700');
+            goldGradient.addColorStop(1, '#ff8c00');
+
+            ctx.fillStyle = goldGradient;
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 1.5;
+
+            // Center Prong
+            ctx.beginPath();
+            ctx.moveTo(0, -110);
+            ctx.quadraticCurveTo(8, -60, 4, 10);
+            ctx.lineTo(-4, 10);
+            ctx.quadraticCurveTo(-8, -60, 0, -110);
+            ctx.fill();
+            ctx.stroke();
+
+            // Left Prong
+            ctx.beginPath();
+            ctx.moveTo(-40, -85);
+            ctx.quadraticCurveTo(-45, -30, -5, 10);
+            ctx.lineTo(-5, -5);
+            ctx.quadraticCurveTo(-25, -35, -25, -70);
+            ctx.quadraticCurveTo(-35, -80, -40, -85);
+            ctx.fill();
+            ctx.stroke();
+
+            // Right Prong
+            ctx.beginPath();
+            ctx.moveTo(40, -85);
+            ctx.quadraticCurveTo(45, -30, 5, 10);
+            ctx.lineTo(5, -5);
+            ctx.quadraticCurveTo(25, -35, 25, -70);
+            ctx.quadraticCurveTo(35, -80, 40, -85);
+            ctx.fill();
+            ctx.stroke();
+
+            // Central Shaft
+            ctx.fillStyle = goldGradient;
+            ctx.fillRect(-4, 10, 8, 110);
+
+            // Decorative Center Ring
+            ctx.beginPath();
+            ctx.arc(0, 10, 10, 0, Math.PI * 2);
+            ctx.fillStyle = '#ff3300';
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            drawStars();
+            drawDivineAura();
+            drawTrishul();
+
+            angle += 0.03;
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
