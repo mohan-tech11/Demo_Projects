@@ -98,8 +98,8 @@ class Company {
 public class OOPDemo {
     public static void main(String[] args) {
         Employee[] employees = {
-            new Manager("Asha", 70000, 10000),
-            new Developer("Ravi", 60000, 10, 500)
+            new Manager("John", 70000, 10000),
+            new Developer("Jane", 60000, 10, 500)
         };
 
         Company company = new Company(employees);
